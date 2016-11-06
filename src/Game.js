@@ -68,6 +68,7 @@ class Game extends Component {
     });
   }
   jumpTo(step) {
+    this.props.handleScore(this.state.gId);
     this.setState({
       stepNumber: step,
       xIsNext: (step % 2) ? false : true,

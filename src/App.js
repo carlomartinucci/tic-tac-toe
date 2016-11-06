@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-//import ReactDOM from 'react-dom';
 import Game from './Game.js'
 
 const Score = (props) => <div className="score">Score: X {props.valueX} - {props.valueO} O</div>
@@ -11,8 +10,18 @@ class App extends Component {
       scores: []
     }
   }
-  onWin(winner, gId) {
-    const scores = this.state.scores.slice()
+  handleScore(gId) {
+    let scores = this.state.scores.slice();
+    if (scores.length > gId) {
+      scores.pop();
+      this.setState({
+        scores: scores
+      });
+    }
+  }
+  handleWin(winner, gId) {
+    this.handleScore(gId);
+    let scores = this.state.scores.slice();
     this.setState({
       scores: scores.concat([winner.winner])
     });
@@ -23,7 +32,7 @@ class App extends Component {
     return (
       <div>
         <Score valueX={scoreX} valueO={scoreO} />
-        <Game gId={this.state.gId} onWin={(winner, gId) => this.onWin(winner, gId)}/>
+        <Game gId={this.state.gId} handleScore={(gId) => this.handleScore(gId)} onWin={(winner, gId) => this.handleWin(winner, gId)}/>
       </div>
     )
   }
