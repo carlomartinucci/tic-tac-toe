@@ -1,29 +1,32 @@
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
+//import ReactDOM from 'react-dom';
+import Game from './Game.js'
+
+const Score = (props) => <div className="score">Score: X {props.valueX} - {props.valueO} O</div>
 
 class App extends Component {
-  constructor(props) {
-    super(props);
-    this.update = this.update.bind(this);
-    this.state = {increasing: false};
+  constructor() {
+    super();
+    this.state = {
+      scores: []
+    }
   }
-  update(){
-    ReactDOM.render(
-      <App val={this.props.val +1} />,
-      document.getElementById('root')
-    );
-  }
-  componentWillReceiveProps(nextProps) {
-    this.setState({increasing: nextProps.val > this.props.val})
-  }
-  shouldComponentUpdate(nextProps, nextState) {
-    return nextProps.val % 3 === 0
+  onWin(winner, gId) {
+    const scores = this.state.scores.slice()
+    this.setState({
+      scores: scores.concat([winner.winner])
+    });
   }
   render() {
-    console.log(this.state.increasing)
-    return <button onClick={this.update}>{this.props.val}</button>
+    const scoreX = this.state.scores.filter((X) => X === "X").length
+    const scoreO = this.state.scores.filter((O) => O === "O").length
+    return (
+      <div>
+        <Score valueX={scoreX} valueO={scoreO} />
+        <Game gId={this.state.gId} onWin={(winner, gId) => this.onWin(winner, gId)}/>
+      </div>
+    )
   }
 }
 
-App.defaultProps = { val: 0 }
 export default App;

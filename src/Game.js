@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
-import {calculateCoordinate, calculateWinner} from './helper.js'
+import {calculateWinner} from './helper.js'
+import MovesList from './MovesList.js'
+import SortButton from './SortButton.js'
 import Board from './Board.js'
 
-const SortButton = (props) => (
-  <button className="toggle" onClick={() => props.onClick()}>
-    {props.value}
+const NewGame = (props) => (
+  <button onClick={() => props.onClick()}>
+    { props.ended ? 'New' : 'Reset'} Game
   </button>
 )
 
@@ -12,14 +14,29 @@ class Game extends Component {
   constructor() {
     super();
     this.state = {
+      gId: 0,
       history: [{
-        squares: Array(9),
+        squares: Array(9).fill(null),
         clicked: null
       }],
       xIsNext: true,
       stepNumber: 0,
-      listIsDescending: false
+      listIsDescending: false,
+      winner: null
     };
+  }
+  resetState() {
+    const gId = this.state.winner ? this.state.gId +1 : this.state.gId;
+    this.setState({
+      gId: gId,
+      history: [{
+        squares: Array(9).fill(null),
+        clicked: null
+      }],
+      xIsNext: true,
+      stepNumber: 0,
+      winner: null
+    })
   }
   handleClick(i) {
     const history = this.state.history.slice(0,this.state.stepNumber + 1);
@@ -37,6 +54,13 @@ class Game extends Component {
       xIsNext: !this.state.xIsNext,
       stepNumber: history.length,
     });
+    const winner = calculateWinner(squares);
+    if (winner) {
+      this.setState({
+        winner: winner
+      })
+      this.props.onWin(winner, this.state.gId);
+    }
   }
   toggleListClick(){
     this.setState({
@@ -61,19 +85,12 @@ class Game extends Component {
       status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
     }
     
-    const moves = history.map((step, move) => {
-      const desc = move ? `Move # ${move} (${ (move % 2) ? 'X' : 'O' } in ${calculateCoordinate(step.clicked)})` : `Game start`;
-      return (
-      <li key={move}>
-          { move !== this.state.stepNumber ? 
-          <a href="#" onClick={() => this.jumpTo(move)}>{desc}</a>
-           : <b>{desc}</b> }
-      </li>
-      );
-    });
     
     return (
       <div className="game">
+        <NewGame
+          ended={!!this.state.winner || !current.squares.includes(null)}
+          onClick={() => this.resetState()}/>
         <div className="game-board">
           <Board squares={current.squares}
             onClick={(i) => this.handleClick(i)}
@@ -82,7 +99,12 @@ class Game extends Component {
         </div>
         <div className="game-info">
           <SortButton onClick={() => this.toggleListClick()} value={this.state.listIsDescending ? "Descending" : "Ascending"} />
-          <ol reversed={this.state.listIsDescending}>{this.state.listIsDescending ? moves.reverse() : moves}</ol>
+          <MovesList
+            gId={this.state.gId}
+            onClick={(move) => this.jumpTo(move)}
+            reversed={this.state.listIsDescending}
+            history={this.state.history}
+            stepNumber={this.state.stepNumber} />
         </div>
       </div>
     );
