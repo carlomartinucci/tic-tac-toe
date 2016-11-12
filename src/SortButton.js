@@ -6,4 +6,13 @@ const SortButton = (props) => (
   </button>
 )
 
+SortButton.defaultProps = {
+  value: "Ascending"
+}
+
+SortButton.propTypes = {
+  value: React.PropTypes.string,
+  onClick: React.PropTypes.func.isRequired
+}
+
 export default SortButton

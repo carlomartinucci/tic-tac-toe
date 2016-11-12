@@ -10,7 +10,8 @@ class App extends Component {
       scores: []
     }
   }
-  handleScore(gId) {
+
+  handleScore = (gId) => {
     let scores = this.state.scores.slice();
     if (scores.length > gId) {
       scores.pop();
@@ -19,7 +20,7 @@ class App extends Component {
       });
     }
   }
-  handleWin(winner, gId) {
+  handleWin = (winner, gId) => {
     this.handleScore(gId);
     let scores = this.state.scores.slice();
     this.setState({
@@ -32,10 +33,20 @@ class App extends Component {
     return (
       <div>
         <Score valueX={scoreX} valueO={scoreO} />
-        <Game gId={this.state.gId} handleScore={(gId) => this.handleScore(gId)} onWin={(winner, gId) => this.handleWin(winner, gId)}/>
+        <Game gId={this.state.gId} handleScore={this.handleScore} onWin={this.handleWin}/>
       </div>
     )
   }
+}
+
+Score.defaultProps = {
+  valueX: 0,
+  valueO: 0
+}
+
+Score.propTypes = {
+  valueX: React.PropTypes.number,
+  valueO: React.PropTypes.number
 }
 
 export default App;

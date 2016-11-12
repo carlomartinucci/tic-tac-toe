@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
 
-function Square(props) {
-   return (
-    <button className={props.winner ? 'square win' : 'square'} onClick={() => props.onClick()}>
-      {props.value}
-    </button>
-  );
-}
+
+const Square = (props) => (
+  <button className={props.winner ? 'square win' : 'square'} onClick={() => props.onClick()}>
+    {props.value}
+  </button>
+)
 
 class Board extends Component {
   renderSquare(i) {
@@ -29,6 +28,30 @@ class Board extends Component {
       </div>
     );
   }
+}
+
+Square.defaultProps = {
+  winner: false,
+  value: null
+}
+
+Square.propTypes = {
+  winner: React.PropTypes.bool,
+  onClick: React.PropTypes.func.isRequired,
+  value: React.PropTypes.string
+}
+
+Board.defaultProps = {
+  winners: [],
+  squares: Array(9).fill(null),
+  status: "Next Player: X"
+}
+
+Board.propTypes = {
+  winners: React.PropTypes.arrayOf(React.PropTypes.number),
+  squares: React.PropTypes.arrayOf(React.PropTypes.string),
+  onClick: React.PropTypes.func.isRequired,
+  status: React.PropTypes.string
 }
 
 export default Board

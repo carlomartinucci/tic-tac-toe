@@ -3,12 +3,9 @@ import {calculateWinner} from './helper.js'
 import MovesList from './MovesList.js'
 import SortButton from './SortButton.js'
 import Board from './Board.js'
+import RaisedButton from 'material-ui/RaisedButton';
 
-const NewGame = (props) => (
-  <button onClick={() => props.onClick()}>
-    { props.ended ? 'New' : 'Reset'} Game
-  </button>
-)
+const NewGame = (props) => <RaisedButton onClick={props.onClick} label={props.ended ? 'New Game' : 'Reset Game'} />
 
 class Game extends Component {
   constructor() {
@@ -24,6 +21,10 @@ class Game extends Component {
       listIsDescending: false,
       winner: null
     };
+    this.resetState = this.resetState.bind(this);
+    this.handleClick = this.handleClick.bind(this);
+    this.toggleListClick = this.toggleListClick.bind(this);
+    this.jumpTo = this.jumpTo.bind(this);
   }
   resetState() {
     const gId = this.state.winner ? this.state.gId +1 : this.state.gId;
@@ -37,6 +38,15 @@ class Game extends Component {
       stepNumber: 0,
       winner: null
     })
+  }
+  handleIfWin(squares) {
+    const winner = calculateWinner(squares);
+    if (winner) {
+      this.setState({
+        winner: winner
+      })
+      this.props.onWin(winner, this.state.gId);
+    }
   }
   handleClick(i) {
     const history = this.state.history.slice(0,this.state.stepNumber + 1);
@@ -54,13 +64,7 @@ class Game extends Component {
       xIsNext: !this.state.xIsNext,
       stepNumber: history.length,
     });
-    const winner = calculateWinner(squares);
-    if (winner) {
-      this.setState({
-        winner: winner
-      })
-      this.props.onWin(winner, this.state.gId);
-    }
+    this.handleIfWin(squares);
   }
   toggleListClick(){
     this.setState({
@@ -73,6 +77,10 @@ class Game extends Component {
       stepNumber: step,
       xIsNext: (step % 2) ? false : true,
     });
+    const history = this.state.history.slice(0,step + 1);
+    const current = history[step];
+    const squares = current.squares.slice();
+    this.handleIfWin(squares);
   }
   render() {
     const history = this.state.history;
@@ -91,18 +99,18 @@ class Game extends Component {
       <div className="game">
         <NewGame
           ended={!!this.state.winner || !current.squares.includes(null)}
-          onClick={() => this.resetState()}/>
+          onClick={this.resetState}/>
         <div className="game-board">
           <Board squares={current.squares}
-            onClick={(i) => this.handleClick(i)}
+            onClick={this.handleClick}
             status={status}
             winners={winner ? winner.squares : []} />
         </div>
         <div className="game-info">
-          <SortButton onClick={() => this.toggleListClick()} value={this.state.listIsDescending ? "Descending" : "Ascending"} />
+          <SortButton onClick={this.toggleListClick} value={this.state.listIsDescending ? "Descending" : "Ascending"} />
           <MovesList
             gId={this.state.gId}
-            onClick={(move) => this.jumpTo(move)}
+            onClick={this.jumpTo}
             reversed={this.state.listIsDescending}
             history={this.state.history}
             stepNumber={this.state.stepNumber} />
@@ -110,6 +118,20 @@ class Game extends Component {
       </div>
     );
   }
+}
+
+NewGame.defaultProps = {
+  ended: true,
+}
+
+NewGame.propTypes = {
+  onClick: React.PropTypes.func.isRequired,
+  ended: React.PropTypes.bool,
+}
+
+Game.propTypes = {
+  onWin: React.PropTypes.func.isRequired,
+  handleScore: React.PropTypes.func.isRequired
 }
 
 export default Game
