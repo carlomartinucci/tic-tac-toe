@@ -12,7 +12,6 @@ class MovesList extends Component {
         key={move}
         primaryText={desc}
         onClick={() => this.props.onClick(move)}
-        disabled={move === this.props.stepNumber}
         rightIcon={move === this.props.stepNumber ? <ActionGrade/> : null}
       />
       );

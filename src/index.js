@@ -5,13 +5,13 @@ injectTapEventPlugin();
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './App';
+import Game from './Game';
 import './index.css';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 const themedApp = 
   <MuiThemeProvider>
-    <App />
+    <Game />
   </MuiThemeProvider>
 
 ReactDOM.render(

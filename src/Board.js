@@ -23,8 +23,9 @@ class Board extends Component {
   render() {
     return (
       <div>
-        <div className="status">{this.props.status}</div>
-        {this.renderRows()}
+        <div className="board">
+          {this.renderRows()}
+        </div>
       </div>
     );
   }

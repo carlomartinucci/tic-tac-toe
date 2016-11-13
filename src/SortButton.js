@@ -1,9 +1,8 @@
 import React from 'react';
+import RaisedButton from 'material-ui/RaisedButton';
 
 const SortButton = (props) => (
-  <button className="toggle" onClick={() => props.onClick()}>
-    {props.value}
-  </button>
+  <RaisedButton onClick={() => props.onClick()} label={props.value} fullWidth={true} secondary={true} />
 )
 
 SortButton.defaultProps = {
