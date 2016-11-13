@@ -22,7 +22,7 @@ class Board extends Component {
 
   render() {
     return (
-      <div>
+      <div className="board-container">
         <div className="board">
           {this.renderRows()}
         </div>

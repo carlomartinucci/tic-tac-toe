@@ -4,6 +4,16 @@ body {
   margin: 0;
 }
 
+.score-container {
+  width: 280px;
+  margin: auto;
+}
+
+.board-row {
+  margin-left: 1vmin;  
+}
+.board-container {
+}
 .board-row:after {
   clear: both;
   content: "";
@@ -14,11 +24,11 @@ body {
   background: #fff;
   border: 1px solid #999;
   float: left;
-  font-size: 96px;
+  font-size: 24vmin;
   font-weight: bold;
-  line-height: 128px;
-  height: 128px;
-  width: 128px;
+  line-height: 32vmin;
+  height: 32vmin;
+  width: 32vmin;
   margin-right: -1px;
   margin-top: -1px;
   padding: 0;
@@ -52,7 +62,28 @@ body {
   margin-top: 20px;
 }
 
-@media(min-width: 640px) {
+@media(min-width: 650px) {
+  .board-row {
+    width: 384px;
+    margin: auto;  
+  }
+  .game {
+    margin-right: 256px;
+  }
+  .square {
+    background: #fff;
+    border: 1px solid #999;
+    float: left;
+    font-size: 96px;
+    font-weight: bold;
+    line-height: 128px;
+    height: 128px;
+    width: 128px;
+    margin-right: -1px;
+    margin-top: -1px;
+    padding: 0;
+    text-align: center;
+  }
   .moves-list {
     margin: 0;
     position: absolute;

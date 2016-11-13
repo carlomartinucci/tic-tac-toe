@@ -20,7 +20,7 @@ const scoreStyle = {
   fontSize: 40
 };
 const Score = (props) =>
-  <div>
+  <div className="score-container">
     <Paper circle={true} style={scoreStyle} className={"score " + (props.next === "X" ? "isNext" : "") + (props.winner === "X" ? " win" : "")}>
       X {props.valueX}
     </Paper>
