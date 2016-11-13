@@ -6,9 +6,6 @@ import Board from './Board.js'
 
 import Paper from 'material-ui/Paper';
 import RaisedButton from 'material-ui/RaisedButton';
-import Drawer from 'material-ui/Drawer';
-import FontIcon from 'material-ui/FontIcon';
-import {BottomNavigation, BottomNavigationItem} from 'material-ui/BottomNavigation';
 
 const scoreStyle = {
   height: 100,
@@ -131,12 +128,6 @@ class Game extends Component {
     const current = history[this.state.stepNumber];
     const winner = calculateWinner(current.squares);
 
-    let status;
-    if (winner) {
-      status = 'Winner: ' + winner.winner;
-    } else {
-      status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
-    }
     const scoreX = this.state.scores.filter((X) => X === "X").length
     const scoreO = this.state.scores.filter((O) => O === "O").length
     
